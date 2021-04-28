@@ -24,5 +24,4 @@ object NetworkService {
             val result = mService.getCards()
             return@async result.cards[0].name
         }
-    }
-
+}

@@ -1,5 +1,6 @@
 package com.trevynmace.mtgplanesviewer.data.model
 
 data class Card (
-    val name: String
+    val name: String,
+    val imageUrl: String
 )

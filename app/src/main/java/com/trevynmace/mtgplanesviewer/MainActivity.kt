@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun changeText(text: String) {
-        val textView = findViewById<TextView>(R.id.text)
-        textView.text = text
+//        val textView = findViewById<TextView>(R.id.text)
+//        textView.text = text
     }
 }

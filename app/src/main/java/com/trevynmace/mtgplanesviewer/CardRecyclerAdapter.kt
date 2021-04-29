@@ -1,5 +1,6 @@
 package com.trevynmace.mtgplanesviewer
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.trevynmace.mtgplanesviewer.data.model.Card
 
 class CardRecyclerAdapter(private val cards: List<Card>) : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
-        val cardView = LayoutInflater.from(parent.context).inflate(R.layout.card_recycler_view_item, parent,false)
+        val cardView = LayoutInflater.from(parent.context).inflate(R.layout.card_recycler_view_item, parent, false)
         return CardHolder(cardView)
     }
 
@@ -32,20 +33,18 @@ class CardRecyclerAdapter(private val cards: List<Card>) : RecyclerView.Adapter<
         }
 
         override fun onClick(v: View?) {
-            TODO("Not yet implemented")
+
         }
 
         fun bindCard(card: Card) {
             this.card = card
-
-            val cardImage = view.findViewById<ImageView>(R.id.card_image)
             val cardName = view.findViewById<TextView>(R.id.card_name)
+            val cardImage = view.findViewById<ImageView>(R.id.card_image)
 
-            Picasso.get()
-                .load(card.imageUrl)
-                .placeholder(R.drawable.ic_close_circle)
-                .into(cardImage)
             cardName.text = card.name
+            Picasso.get()
+                    .load(card.imageUrl.replace("http","https"))
+                    .into(cardImage)
         }
     }
 }

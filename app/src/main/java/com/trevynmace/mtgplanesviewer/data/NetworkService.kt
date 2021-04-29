@@ -13,11 +13,8 @@ object NetworkService {
     private val mService: MTGService
 
     init {
-//        val client =
-
         mService = Retrofit.Builder()
             .baseUrl(baseUrl)
-//            .client()
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(MTGService::class.java)

@@ -7,6 +7,7 @@ platform :android do
       task: 'clean assemble',
       build_type: 'debug'
     )
+    increment_version_code
     commit_android_version_bump
     testfairy(
       api_key: ENV["TESTFAIRY_API_KEY"]

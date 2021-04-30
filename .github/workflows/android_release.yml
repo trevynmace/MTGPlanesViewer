@@ -21,7 +21,7 @@ jobs:
         env:
           TESTFAIRY_API_KEY: ${{ secrets.TESTFAIRY_API_KEY }}
         with:
-          lane: 'testfairy'
+          lane: 'testfairy_debug'
 
 #   build:
 #     runs-on: ubuntu-latest

@@ -17,6 +17,10 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.2
+      - name: Bump version
+        uses: chkfung/android-version-actions@v1.1
+        with:
+          gradlePath: app/build.gradle
       - uses: maierj/fastlane-action@v2.0.1
         env:
           TESTFAIRY_API_KEY: ${{ secrets.TESTFAIRY_API_KEY }}

@@ -2,7 +2,7 @@ default_platform(:android)
 
 platform :android do
   desc "TestFairy debug upload"
-  lane :testfairy do
+  lane :testfairy_debug do
     gradle(
       task: 'clean assemble',
       build_type: 'debug'

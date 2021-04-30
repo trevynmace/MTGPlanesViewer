@@ -1,0 +1,14 @@
+default_platform(:android)
+
+platform :android do
+  desc "TestFairy debug upload"
+  lane :testfairy do
+    gradle(
+      task: 'clean assemble',
+      build_type: 'debug'
+    )
+    testfairy(
+      api_key: ENV["TESTFAIRY_API_KEY"]
+    )
+  end
+end

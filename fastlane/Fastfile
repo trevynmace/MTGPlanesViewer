@@ -4,7 +4,9 @@ platform :android do
   desc "TestFairy debug upload"
   lane :testfairy_debug do
     increment_version_code
-    commit_android_version_bump
+    commit_android_version_bump(
+      force:true
+    )
     gradle(
       task: 'clean assemble',
       build_type: 'debug'

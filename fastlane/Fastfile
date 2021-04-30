@@ -3,6 +3,7 @@ default_platform(:android)
 platform :android do
   desc "TestFairy debug upload"
   lane :testfairy_debug do
+    commit_android_version_bump
     gradle(
       task: 'clean assemble',
       build_type: 'debug'

@@ -1,14 +1,11 @@
 package com.trevynmace.mtgplanesviewer
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.trevynmace.mtgplanesviewer.data.model.Card
 
 class CardDetailsActivity : AppCompatActivity() {
     private lateinit var mCard: Card
-
-    private lateinit var mCardNameTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +24,6 @@ class CardDetailsActivity : AppCompatActivity() {
             finish()
         }
 
-        mCardNameTextView = findViewById(R.id.card_name)
-        mCardNameTextView.text = mCard.name
+
     }
 }

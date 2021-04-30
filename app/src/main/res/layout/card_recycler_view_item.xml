@@ -14,7 +14,8 @@
         android:layout_marginHorizontal="8dp"
         android:layout_marginBottom="4dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/card_image"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            android:fontFamily="@font/opensans_semibold"
             tools:text="Card Title"/>
 
     </LinearLayout>

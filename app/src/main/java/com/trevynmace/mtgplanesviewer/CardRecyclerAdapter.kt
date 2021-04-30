@@ -1,10 +1,13 @@
 package com.trevynmace.mtgplanesviewer
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.trevynmace.mtgplanesviewer.data.model.Card
@@ -34,7 +37,9 @@ class CardRecyclerAdapter() : RecyclerView.Adapter<CardRecyclerAdapter.CardHolde
         }
 
         override fun onClick(v: View?) {
-
+            val intent = Intent(view.context, CardDetailsActivity::class.java)
+            intent.putExtra("card", card)
+            startActivity(view.context, intent, null)
         }
 
         fun bindCard(card: Card) {
@@ -46,7 +51,7 @@ class CardRecyclerAdapter() : RecyclerView.Adapter<CardRecyclerAdapter.CardHolde
                 cardName.text = card.name
             }
 
-            if (card.imageUrl?.isNotEmpty() == true) {
+            if (card.imageUrl.isNotEmpty()) {
                 Picasso.get()
                         .load(card.imageUrl.replace("http", "https"))
                         .into(cardImage)

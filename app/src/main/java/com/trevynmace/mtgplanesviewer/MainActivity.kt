@@ -20,12 +20,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mCardProgressBar: View
     private lateinit var mSearchEditText: EditText
 
+    private var mSets: List<MTGSet> = emptyList()
+
     private var timer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        getSets()
         getCards()
 
         mRecyclerView = findViewById(R.id.cards_recycler_view)
@@ -56,6 +59,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             timer?.start()
+        }
+    }
+
+    private fun getSets() {
+        GlobalScope.launch(Dispatchers.Main) {
+            mSets = NetworkService.getSetsAsync().await()
         }
     }
 

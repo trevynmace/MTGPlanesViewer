@@ -9,6 +9,19 @@ on:
     - main
 
 jobs:
+
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+      - uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: 'testfairy'
+          options: '{ "api_key": "${{ secrets.TESTFAIRY_API_KEY }}" }'
+
 #   build:
 #     runs-on: ubuntu-latest
 #     steps:
@@ -50,15 +63,3 @@ jobs:
 #       id: run_fastlane_testfairy
 #       run: |
 #         bundle exec fastlane run testfairy api_key:"${{ secrets.TESTFAIRY_API_KEY }}"
-
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.7.2'
-      - uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: 'testfairy'
-          options: '{ "api_key": "${{ secrets.TESTFAIRY_API_KEY }}" }'

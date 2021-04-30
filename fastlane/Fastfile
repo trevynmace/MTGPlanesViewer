@@ -3,12 +3,12 @@ default_platform(:android)
 platform :android do
   desc "TestFairy debug upload"
   lane :testfairy_debug do
+    increment_version_code
+    commit_android_version_bump
     gradle(
       task: 'clean assemble',
       build_type: 'debug'
     )
-    increment_version_code
-    commit_android_version_bump
     testfairy(
       api_key: ENV["TESTFAIRY_API_KEY"]
     )

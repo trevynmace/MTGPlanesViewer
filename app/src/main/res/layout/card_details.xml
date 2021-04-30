@@ -36,12 +36,12 @@
             android:layout_height="match_parent"
             app:cardBackgroundColor="@color/black"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Top.Rounded"
-            app:contentPadding="12dp"
-            android:gravity="bottom">
+            app:contentPadding="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="64dp"
                 android:orientation="vertical">
 
                 <TextView

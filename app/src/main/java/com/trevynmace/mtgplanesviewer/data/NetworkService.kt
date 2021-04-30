@@ -20,8 +20,8 @@ object NetworkService {
             .create(MTGService::class.java)
     }
 
-    suspend fun getCardsAsync(): Deferred<List<Card>> =
+    suspend fun getCardsAsync(pageSize: Int, name: String = ""): Deferred<List<Card>> =
         scope.async(Dispatchers.IO) {
-            return@async mService.getCards(3).cards
+            return@async mService.getCards(pageSize, name).cards
         }
 }

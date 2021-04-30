@@ -1,6 +1,5 @@
 package com.trevynmace.mtgplanesviewer
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,10 +40,14 @@ class CardRecyclerAdapter(private val cards: List<Card>) : RecyclerView.Adapter<
             val cardName = view.findViewById<TextView>(R.id.card_name)
             val cardImage = view.findViewById<ImageView>(R.id.card_image)
 
-            cardName.text = card.name
-            Picasso.get()
-                    .load(card.imageUrl.replace("http","https"))
-                    .into(cardImage)
+            if (card.name.isNotEmpty()) {
+                cardName.text = card.name
+            }
+            if (card.imageUrl?.isNotEmpty() == true) {
+                Picasso.get()
+                        .load(card.imageUrl.replace("http", "https"))
+                        .into(cardImage)
+            }
         }
     }
 }

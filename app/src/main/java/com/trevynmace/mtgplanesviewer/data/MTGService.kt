@@ -6,5 +6,7 @@ import retrofit2.http.Query
 
 interface MTGService {
     @GET("v1/cards/")
-    suspend fun getCards(@Query("pageSize") pageSize: Int): Cards
+    suspend fun getCards(
+            @Query("pageSize") pageSize: Int,
+            @Query("name") name: String = ""): Cards
 }

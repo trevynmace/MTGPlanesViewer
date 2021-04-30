@@ -3,4 +3,9 @@
     <string name="search">Search</string>
     <string name="card_image">Card image</string>
     <string name="back_button">Back button</string>
+
+    <string name="set_template">Set: %1$s</string>
+    <string name="artist_template">Artist: %1$s</string>
+    <string name="converted_mana_cost_template">CMC: %1$s</string>
+    <string name="power_toughness_template">%1$s/%2$s</string>
 </resources>

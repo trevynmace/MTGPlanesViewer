@@ -1,16 +1,16 @@
 package com.trevynmace.mtgplanesviewer.data.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Card (
     val name: String = "",
     val imageUrl: String = "",
-    @Json(name="cmc") val convertedManaCost: Int = 0,
+    val cmc: Int = 0,
     val type: String = "",
     val rarity: String = "",
     val set: String = "",
-    @Json(name="text") val description: String = "",
+    val text: String = "",
     val artist: String = "",
     val power: String = "",
     val toughness: String = "",

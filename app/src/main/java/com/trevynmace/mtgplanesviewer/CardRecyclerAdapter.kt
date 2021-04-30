@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.trevynmace.mtgplanesviewer.data.model.Card
 
-class CardRecyclerAdapter(private val cards: List<Card>) : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>() {
+class CardRecyclerAdapter() : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>() {
+    var cards: List<Card> = emptyList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
         val cardView = LayoutInflater.from(parent.context).inflate(R.layout.card_recycler_view_item, parent, false)
         return CardHolder(cardView)
@@ -43,10 +45,14 @@ class CardRecyclerAdapter(private val cards: List<Card>) : RecyclerView.Adapter<
             if (card.name.isNotEmpty()) {
                 cardName.text = card.name
             }
+
             if (card.imageUrl?.isNotEmpty() == true) {
                 Picasso.get()
                         .load(card.imageUrl.replace("http", "https"))
                         .into(cardImage)
+            }
+            else {
+                cardImage.setImageResource(R.drawable.card_placeholder)
             }
         }
     }

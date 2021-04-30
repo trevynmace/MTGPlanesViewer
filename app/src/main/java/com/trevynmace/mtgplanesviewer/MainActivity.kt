@@ -10,11 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.trevynmace.mtgplanesviewer.data.NetworkService
-import com.trevynmace.mtgplanesviewer.data.model.Card
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mRecyclerView: RecyclerView
@@ -23,8 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mSearchEditText: EditText
 
     private var timer: CountDownTimer? = null
-
-    var mCardList: List<Card> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +31,14 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView = findViewById(R.id.cards_recycler_view)
         val gridLayout = GridLayoutManager(this, 2)
         mRecyclerView.layoutManager = gridLayout
-        mCardProgressBar = findViewById(R.id.cards_progress_bar)
-        mRecyclerAdapter = CardRecyclerAdapter(mCardList)
+
+        mRecyclerAdapter = CardRecyclerAdapter()
         mRecyclerView.adapter = mRecyclerAdapter
+
         mSearchEditText = findViewById(R.id.search_edit_text)
         mSearchEditText.addTextChangedListener(textWatcher)
+
+        mCardProgressBar = findViewById(R.id.cards_progress_bar)
     }
 
     private val textWatcher = object : TextWatcher {
@@ -54,7 +53,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     toggleProgressBar(true)
-
                     getCards(searchString.toString())
                 }
             }
@@ -65,9 +63,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCards(searchString: String = "") {
         GlobalScope.launch(Dispatchers.Main) {
-            mCardList = NetworkService.getCardsAsync(3, searchString).await()
-            mRecyclerAdapter = CardRecyclerAdapter(mCardList)
-            mRecyclerView.adapter = mRecyclerAdapter
+            val cards = NetworkService.getCardsAsync(3, searchString).await()
+            mRecyclerAdapter.cards = cards
+            mRecyclerAdapter.notifyDataSetChanged()
+
             toggleProgressBar(false)
         }
     }

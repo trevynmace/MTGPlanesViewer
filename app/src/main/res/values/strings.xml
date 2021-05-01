@@ -8,4 +8,7 @@
     <string name="artist_template">Artist: %1$s</string>
     <string name="converted_mana_cost_template">CMC: %1$s</string>
     <string name="power_toughness_template">%1$s/%2$s</string>
+    <string name="settings">Settings</string>
+    <string name="number_of_results_to_get">Search results chunk size:</string>
+    <string name="save">Save</string>
 </resources>

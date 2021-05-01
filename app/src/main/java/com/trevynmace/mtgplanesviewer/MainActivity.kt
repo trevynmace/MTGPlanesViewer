@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,15 +23,22 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val SHARED_PREFERENCES_KEY = "com.trevynmace.mtgplanesviewer.main"
+    private val RESULTS_CHUNK_SIZE_KEY = "results_chunk_size"
+    private val UPDATE_TIME_KEY = "update_time"
+    private val CARDS_KEY = "cards"
+
+    private var mChunkSize: Int = 10
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mRecyclerAdapter: CardRecyclerAdapter
     private lateinit var mCardProgressBar: View
     private lateinit var mSearchEditText: EditText
+    private lateinit var mSettingsButton: Button
 
-    //private var mSets: List<MTGSet> = emptyList()
+    private lateinit var mSettingsLayout: View
 
     private var timer: CountDownTimer? = null
+    private lateinit var mSettingsDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +55,12 @@ class MainActivity : AppCompatActivity() {
         mSearchEditText.addTextChangedListener(textWatcher)
 
         mCardProgressBar = findViewById(R.id.cards_progress_bar)
+        mSettingsButton = findViewById(R.id.settings_button)
+        mSettingsButton.setOnClickListener {
+            showSettingsModal()
+        }
+
+        buildSettingsModal()
 
         if (isCacheValid()) {
             populateAdapterFromCache()
@@ -61,17 +77,19 @@ class MainActivity : AppCompatActivity() {
         val editor = sharedPrefs.edit()
 
         val json = Gson().toJson(mRecyclerAdapter.cards)
-        editor.putString("cards", json)
+        editor.putString(CARDS_KEY, json)
 
         val millis = System.currentTimeMillis()
-        editor.putLong("update_time", millis)
+        editor.putLong(UPDATE_TIME_KEY, millis)
+
+        editor.putInt(RESULTS_CHUNK_SIZE_KEY, mChunkSize)
 
         editor.apply()
     }
 
     private fun isCacheValid(): Boolean {
         val sharedPrefs = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        val updateTime = sharedPrefs.getLong("update_time", 0)
+        val updateTime = sharedPrefs.getLong(UPDATE_TIME_KEY, 0)
 
         val timeSinceUpdate = System.currentTimeMillis() - updateTime
         val oneDayMillis = 86400000
@@ -84,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun populateAdapterFromCache() {
         val sharedPrefs = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        val cardsJson = sharedPrefs.getString("cards", "")
+        val cardsJson = sharedPrefs.getString(CARDS_KEY, "")
         val cards = Gson().fromJson(cardsJson, Array<Card>::class.java).toList()
 
         mRecyclerAdapter.cards = cards
@@ -117,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCards(searchString: String = "") {
         GlobalScope.launch(Dispatchers.Main) {
-            val cards = NetworkService.getCardsAsync(10, searchString).await()
+            val cards = NetworkService.getCardsAsync(mChunkSize, searchString).await()
             mRecyclerAdapter.cards = cards
             mRecyclerAdapter.notifyDataSetChanged()
 
@@ -134,5 +152,28 @@ class MainActivity : AppCompatActivity() {
             mRecyclerView.visibility = View.VISIBLE
             mCardProgressBar.visibility = View.GONE
         }
+    }
+
+    private fun buildSettingsModal() {
+        mSettingsLayout = LayoutInflater.from(this).inflate(R.layout.settings_dialog, null, false)
+        val sharedPrefs = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+        val chunkSize = sharedPrefs.getInt(RESULTS_CHUNK_SIZE_KEY, 10)
+
+        val chunkSizeEditText = mSettingsLayout.findViewById<EditText>(R.id.number_of_results_edit_text)
+        chunkSizeEditText.setText(chunkSize.toString())
+        val settingsSaveButton = mSettingsLayout.findViewById<Button>(R.id.settings_save_button)
+        settingsSaveButton.setOnClickListener {
+            mChunkSize = chunkSizeEditText.text.toString().toInt()
+            mSettingsDialog.dismiss()
+        }
+
+        mSettingsDialog = AlertDialog.Builder(this)
+            .setView(mSettingsLayout)
+            .create()
+    }
+
+    private fun showSettingsModal() {
+
+        mSettingsDialog.show()
     }
 }

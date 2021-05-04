@@ -16,7 +16,7 @@ platform :android do
     )
     testfairy(
       api_key: ENV["TESTFAIRY_API_KEY"],
-      notify: on
+      testers_groups: "all"
     )
   end
 end

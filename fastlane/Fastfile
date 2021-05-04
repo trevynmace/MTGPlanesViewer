@@ -15,7 +15,8 @@ platform :android do
       build_type: 'debug'
     )
     testfairy(
-      api_key: ENV["TESTFAIRY_API_KEY"]
+      api_key: ENV["TESTFAIRY_API_KEY"],
+      notify: on
     )
   end
 end

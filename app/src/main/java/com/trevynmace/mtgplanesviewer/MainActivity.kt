@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         mCardProgressBar = findViewById(R.id.cards_progress_bar)
         mSettingsButton = findViewById(R.id.settings_button)
         mSettingsButton.setOnClickListener {
-            showSettingsModal()
+            mSettingsDialog.show()
         }
 
         buildSettingsModal()
@@ -158,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         mSettingsLayout = LayoutInflater.from(this).inflate(R.layout.settings_dialog, null, false)
         val sharedPrefs = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
         val chunkSize = sharedPrefs.getInt(RESULTS_CHUNK_SIZE_KEY, 10)
+        mChunkSize = chunkSize
 
         val chunkSizeEditText = mSettingsLayout.findViewById<EditText>(R.id.number_of_results_edit_text)
         chunkSizeEditText.setText(chunkSize.toString())
@@ -170,10 +171,5 @@ class MainActivity : AppCompatActivity() {
         mSettingsDialog = AlertDialog.Builder(this)
             .setView(mSettingsLayout)
             .create()
-    }
-
-    private fun showSettingsModal() {
-
-        mSettingsDialog.show()
     }
 }

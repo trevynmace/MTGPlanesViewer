@@ -4,11 +4,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class InfiniteScrollListener(private val mLayoutManager: GridLayoutManager) : RecyclerView.OnScrollListener() {
+    private val mInitialPageIndex = 1
+
     private var mThreshold = 6
     private var mCurrentPage = 1
     private var mPreviousTotalItemCount = 0
     private var mIsLoadingMoreCards = true
-    private var mInitialPageIndex = 1
 
     init {
         mThreshold *= mLayoutManager.spanCount
@@ -42,9 +43,9 @@ abstract class InfiniteScrollListener(private val mLayoutManager: GridLayoutMana
         }
     }
 
-//    fun resetState() {
-//        mCurrentPage = mInitialPageIndex
-//        mPreviousTotalItemCount = 0
-//        mIsLoadingMoreCards = true
-//    }
+    fun resetState() {
+        mCurrentPage = mInitialPageIndex
+        mPreviousTotalItemCount = 0
+        mIsLoadingMoreCards = true
+    }
 }

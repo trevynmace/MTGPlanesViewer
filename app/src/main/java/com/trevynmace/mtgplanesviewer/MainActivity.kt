@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var mSearchString = ""
 
     private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mScrollListener: InfiniteScrollListener
     private lateinit var mRecyclerAdapter: CardRecyclerAdapter
     private lateinit var mCardProgressBar: View
     private lateinit var mSearchEditText: EditText
@@ -51,13 +52,13 @@ class MainActivity : AppCompatActivity() {
         mRecyclerAdapter = CardRecyclerAdapter()
         mRecyclerView.adapter = mRecyclerAdapter
 
-        val scrollListener = object : InfiniteScrollListener(mRecyclerView.layoutManager as GridLayoutManager) {
+        mScrollListener = object : InfiniteScrollListener(mRecyclerView.layoutManager as GridLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
                 getAndAppendCards(page)
             }
         }
 
-        mRecyclerView.addOnScrollListener(scrollListener)
+        mRecyclerView.addOnScrollListener(mScrollListener)
 
         mSearchEditText = findViewById(R.id.search_edit_text)
         mSearchEditText.addTextChangedListener(textWatcher)
@@ -131,6 +132,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     toggleProgressBar(true)
+                    mScrollListener.resetState()
+                    
                     getCards(searchString.toString())
                 }
             }

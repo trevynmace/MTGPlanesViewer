@@ -1,7 +1,6 @@
 package com.trevynmace.mtgplanesviewer.data
 
 import com.trevynmace.mtgplanesviewer.data.model.Card
-import com.trevynmace.mtgplanesviewer.data.model.MTGSet
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

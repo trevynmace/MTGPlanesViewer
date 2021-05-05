@@ -1,7 +1,6 @@
 package com.trevynmace.mtgplanesviewer.data
 
 import com.trevynmace.mtgplanesviewer.data.model.Cards
-import com.trevynmace.mtgplanesviewer.data.model.MTGSets
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -26,8 +26,13 @@ object NetworkService {
             return@async mService.getCards(pageSize, name).cards
         }
 
-    suspend fun getSetsAsync(): Deferred<List<MTGSet>> =
-        scope.async(Dispatchers.IO) {
-            return@async mService.getSets().sets
-        }
+    suspend fun getCardsAsync(pageNumber: Int, pageSize: Int, name: String = ""): Deferred<List<Card>> =
+            scope.async(Dispatchers.IO) {
+                return@async mService.getCards(pageNumber, pageSize, name).cards
+            }
+
+//    suspend fun getSetsAsync(): Deferred<List<MTGSet>> =
+//        scope.async(Dispatchers.IO) {
+//            return@async mService.getSets().sets
+//        }
 }

@@ -11,6 +11,12 @@ interface MTGService {
             @Query("pageSize") pageSize: Int,
             @Query("name") name: String = ""): Cards
 
-    @GET("v1/sets/")
-    suspend fun getSets(): MTGSets
+    @GET("v1/cards/")
+    suspend fun getCards(
+            @Query("page") pageNumber: Int,
+            @Query("pageSize") pageSize: Int,
+            @Query("name") name: String = ""): Cards
+
+//    @GET("v1/sets/")
+//    suspend fun getSets(): MTGSets
 }

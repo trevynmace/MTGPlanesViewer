@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.trevynmace.mtgplanesviewer.data.model.Card
 
-class CardRecyclerAdapter() : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>() {
-    var cards: List<Card> = emptyList()
+class CardRecyclerAdapter : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>() {
+    var cards: MutableList<Card> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
         val cardView = LayoutInflater.from(parent.context).inflate(R.layout.card_recycler_view_item, parent, false)

@@ -12,4 +12,10 @@
     <string name="save">Save</string>
     <string name="mtg_set">MTG Set:</string>
     <string name="choose_a_set">Choose a set</string>
+    <string name="additional_filtering">Additional Filtering</string>
+    <string name="white">White</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="red">Red</string>
+    <string name="black">Black</string>
 </resources>

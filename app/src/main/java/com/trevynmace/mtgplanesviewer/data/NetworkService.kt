@@ -5,6 +5,7 @@ import com.trevynmace.mtgplanesviewer.data.model.MTGSet
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 
 object NetworkService {
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -21,9 +22,9 @@ object NetworkService {
             .create(MTGService::class.java)
     }
 
-    suspend fun getCardsAsync(pageSize: Int, name: String = ""): Deferred<List<Card>> =
+    suspend fun getCardsAsync(pageSize: Int, name: String, selectedSet: String, colors: List<String>): Deferred<List<Card>> =
         scope.async(Dispatchers.IO) {
-            return@async mService.getCards(pageSize, name).cards
+            return@async mService.getCards(pageSize, name, selectedSet, colors).cards
         }
 
     suspend fun getCardsAsync(pageNumber: Int, pageSize: Int, name: String = ""): Deferred<List<Card>> =

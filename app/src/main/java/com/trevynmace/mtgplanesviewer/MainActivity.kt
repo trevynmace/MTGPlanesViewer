@@ -7,8 +7,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.trevynmace.mtgplanesviewer.data.NetworkService
 import com.trevynmace.mtgplanesviewer.data.model.Card
+import com.trevynmace.mtgplanesviewer.data.model.MTGSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
     private val SHARED_PREFERENCES_KEY = "com.trevynmace.mtgplanesviewer.main"
@@ -26,8 +28,8 @@ class MainActivity : AppCompatActivity() {
     private val CARDS_KEY = "cards"
 
     private val mPageSize = 10
-
     private var mSearchString = ""
+    private var mSelectedColors = ArrayList<String>()
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mScrollListener: InfiniteScrollListener
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mSettingsLayout: View
     private lateinit var mSettingsDialog: AlertDialog
+
+    private var mSelectedSet: MTGSet = MTGSet()
 
     private var mTimer: CountDownTimer? = null
 
@@ -131,8 +135,9 @@ class MainActivity : AppCompatActivity() {
                 override fun onFinish() {
                     toggleProgressBar(true)
                     mScrollListener.resetState()
+                    mSearchString = searchString.toString()
                     
-                    getCards(searchString.toString())
+                    getCards()
                 }
             }
 
@@ -140,17 +145,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun getSets() {
-//        GlobalScope.launch(Dispatchers.Main) {
-//            mSets = NetworkService.getSetsAsync().await()
-//        }
-//    }
-
-    private fun getCards(searchString: String = "") {
-        mSearchString = searchString
-
+    private fun getSets() {
         GlobalScope.launch(Dispatchers.Main) {
-            val cards = NetworkService.getCardsAsync(mPageSize, searchString).await()
+            val sets = NetworkService.getSetsAsync().await()
+
+            val spinner = mSettingsLayout.findViewById<Spinner>(R.id.set_spinner)
+            val spinnerList = ArrayList<MTGSet>()
+            spinnerList.add(MTGSet())
+            spinnerList.addAll(sets)
+
+            ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, spinnerList)
+                    .also { adapter ->
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        spinner.adapter = adapter
+                    }
+            spinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+                    mSelectedSet = sets[position]
+                }
+            }
+        }
+    }
+
+    private fun getCards() {
+        GlobalScope.launch(Dispatchers.Main) {
+            val cards = NetworkService.getCardsAsync(mPageSize, mSearchString, mSelectedSet.code, mSelectedColors).await()
 
             mRecyclerAdapter.cards = cards.toMutableList()
             mRecyclerAdapter.notifyDataSetChanged()
@@ -185,9 +205,16 @@ class MainActivity : AppCompatActivity() {
     private fun buildSettingsModal() {
         mSettingsLayout = LayoutInflater.from(this).inflate(R.layout.settings_dialog, null, false)
 
+        getSets()
+
+        //TODO: wire up the checkbox group, OH AND MAKE IT A CHECKBOX GROUP
+        mSettingsLayout.get
+
         val settingsSaveButton = mSettingsLayout.findViewById<Button>(R.id.settings_save_button)
         settingsSaveButton.setOnClickListener {
+            // TODO: for each selected checkbox for colors, add those strings to the mSelectedColors
             mSettingsDialog.dismiss()
+            getCards()
         }
 
         mSettingsDialog = AlertDialog.Builder(this)

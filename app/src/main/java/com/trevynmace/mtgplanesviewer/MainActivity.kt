@@ -22,11 +22,11 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val SHARED_PREFERENCES_KEY = "com.trevynmace.mtgplanesviewer.main"
-    private val RESULTS_PAGE_SIZE_KEY = "results_page_size"
     private val UPDATE_TIME_KEY = "update_time"
     private val CARDS_KEY = "cards"
 
-    private var mPageSize = 10
+    private val mPageSize = 10
+
     private var mSearchString = ""
 
     private lateinit var mRecyclerView: RecyclerView
@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mSettingsButton: Button
 
     private lateinit var mSettingsLayout: View
-
-    private var timer: CountDownTimer? = null
     private lateinit var mSettingsDialog: AlertDialog
+
+    private var mTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,8 +95,6 @@ class MainActivity : AppCompatActivity() {
         val millis = System.currentTimeMillis()
         editor.putLong(UPDATE_TIME_KEY, millis)
 
-        editor.putInt(RESULTS_PAGE_SIZE_KEY, mPageSize)
-
         editor.apply()
     }
 
@@ -126,9 +124,9 @@ class MainActivity : AppCompatActivity() {
         override fun afterTextChanged(s: Editable?) {}
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(searchString: CharSequence?, start: Int, before: Int, count: Int) {
-            timer?.cancel()
+            mTimer?.cancel()
 
-            timer = object : CountDownTimer(1000, 1000) {
+            mTimer = object : CountDownTimer(1000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     toggleProgressBar(true)
@@ -138,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            timer?.start()
+            mTimer?.start()
         }
     }
 
@@ -186,15 +184,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun buildSettingsModal() {
         mSettingsLayout = LayoutInflater.from(this).inflate(R.layout.settings_dialog, null, false)
-        val sharedPrefs = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        val pageSize = sharedPrefs.getInt(RESULTS_PAGE_SIZE_KEY, 10)
-        mPageSize = pageSize
 
-        val pageSizeEditText = mSettingsLayout.findViewById<EditText>(R.id.number_of_results_edit_text)
-        pageSizeEditText.setText(pageSize.toString())
         val settingsSaveButton = mSettingsLayout.findViewById<Button>(R.id.settings_save_button)
         settingsSaveButton.setOnClickListener {
-            mPageSize = pageSizeEditText.text.toString().toInt()
             mSettingsDialog.dismiss()
         }
 

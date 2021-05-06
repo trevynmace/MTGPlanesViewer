@@ -21,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 class MainActivity : AppCompatActivity() {
     private val SHARED_PREFERENCES_KEY = "com.trevynmace.mtgplanesviewer.main"
     private val UPDATE_TIME_KEY = "update_time"
@@ -29,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private val mPageSize = 10
     private var mSearchString = ""
+    private var mSelectedSet: MTGSet = MTGSet()
     private var mSelectedColors = ArrayList<String>()
 
     private lateinit var mRecyclerView: RecyclerView
@@ -40,8 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mSettingsLayout: View
     private lateinit var mSettingsDialog: AlertDialog
-
-    private var mSelectedSet: MTGSet = MTGSet()
+    private lateinit var mSetSpinner: Spinner
 
     private var mTimer: CountDownTimer? = null
 
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             val sets = NetworkService.getSetsAsync().await()
 
-            val spinner = mSettingsLayout.findViewById<Spinner>(R.id.set_spinner)
+            mSetSpinner = mSettingsLayout.findViewById<Spinner>(R.id.set_spinner)
             val spinnerList = ArrayList<MTGSet>()
             spinnerList.add(MTGSet())
             spinnerList.addAll(sets)
@@ -157,14 +156,8 @@ class MainActivity : AppCompatActivity() {
             ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, spinnerList)
                     .also { adapter ->
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        spinner.adapter = adapter
+                        mSetSpinner.adapter = adapter
                     }
-            spinner.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-                override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                    mSelectedSet = sets[position]
-                }
-            }
         }
     }
 
@@ -181,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAndAppendCards(pageNumber: Int) {
         GlobalScope.launch(Dispatchers.Main) {
-            val cards = NetworkService.getCardsAsync(pageNumber, mPageSize, mSearchString).await()
+            val cards = NetworkService.getCardsAsync(pageNumber, mPageSize, mSearchString, mSelectedSet.code, mSelectedColors).await()
 
             val startPosition = mRecyclerAdapter.cards.size
             mRecyclerAdapter.cards.addAll(cards)
@@ -207,12 +200,23 @@ class MainActivity : AppCompatActivity() {
 
         getSets()
 
-        //TODO: wire up the checkbox group, OH AND MAKE IT A CHECKBOX GROUP
-        mSettingsLayout.get
+        val whiteCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.white_check_box)
+        val blackCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.black_check_box)
+        val redCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.red_check_box)
+        val greenCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.green_check_box)
+        val blueCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.blue_check_box)
 
         val settingsSaveButton = mSettingsLayout.findViewById<Button>(R.id.settings_save_button)
         settingsSaveButton.setOnClickListener {
-            // TODO: for each selected checkbox for colors, add those strings to the mSelectedColors
+            mSelectedColors.clear()
+            if (whiteCheckBox.isChecked) { mSelectedColors.add("White") }
+            if (blackCheckBox.isChecked) { mSelectedColors.add("Black") }
+            if (redCheckBox.isChecked) { mSelectedColors.add("Red") }
+            if (greenCheckBox.isChecked) { mSelectedColors.add("Green") }
+            if (blueCheckBox.isChecked) { mSelectedColors.add("Blue") }
+
+            mSelectedSet = mSetSpinner.selectedItem as MTGSet
+
             mSettingsDialog.dismiss()
             getCards()
         }

@@ -31,18 +31,7 @@ class CardDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.card_details)
 
-        try {
-            mCard = intent.getSerializableExtra("card") as Card
-
-            if (mCard == null) {
-                //TODO: pop up something saying the card couldnt' be loaded?
-                finish()
-            }
-        }
-        catch (e: Exception) {
-            //TODO: pop up something saying the card couldnt' be loaded?
-            finish()
-        }
+        mCard = intent.getSerializableExtra("card") as Card
 
         mSetTextView = findViewById(R.id.set_text_view)
         mCardImageView = findViewById(R.id.card_image_view)

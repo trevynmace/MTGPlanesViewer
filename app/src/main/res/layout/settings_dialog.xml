@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/grey"
-    android:paddingVertical="36dp">
+    android:paddingVertical="36dp"
+    android:paddingHorizontal="24dp">
 
     <TextView
         android:id="@+id/additional_filtering_text_view"
@@ -21,11 +22,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="12dp"
         android:layout_below="@+id/additional_filtering_text_view">
 
         <TextView
-            android:id="@+id/number_of_results_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
@@ -41,51 +41,130 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/colors_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/colors"
+        android:textColor="@color/white"
+        android:layout_below="@+id/mtg_set_layout"/>
+
+    <GridLayout
         android:id="@+id/colors_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
+        android:rowCount="3"
+        android:columnCount="3"
+        android:useDefaultMargins="true"
         android:layout_marginHorizontal="24dp"
-        android:layout_below="@+id/mtg_set_layout">
+        android:layout_below="@+id/colors_label_text_view">
 
-        <CheckBox
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/white"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="12dp">
 
-        <CheckBox
+            <CheckBox
+                android:id="@+id/white_check_box"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/white_mana"
+                android:contentDescription="@string/white_mana_symbol"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/blue"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="12dp">
 
-        <CheckBox
+            <CheckBox
+                android:id="@+id/blue_check_box"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/blue_mana"
+                android:contentDescription="@string/blue_mana_symbol"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/green"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="12dp">
 
-        <CheckBox
+            <CheckBox
+                android:id="@+id/black_check_box"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/black_mana"
+                android:contentDescription="@string/black_mana_symbol"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/red"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="12dp">
 
-        <CheckBox
+            <CheckBox
+                android:id="@+id/green_check_box"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/green_mana"
+                android:contentDescription="@string/green_mana_symbol"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/black"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="12dp">
 
-    </LinearLayout>
+            <CheckBox
+                android:id="@+id/red_check_box"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/red_mana"
+                android:contentDescription="@string/red_mana_symbol"/>
+
+        </LinearLayout>
+
+    </GridLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settings_save_button"

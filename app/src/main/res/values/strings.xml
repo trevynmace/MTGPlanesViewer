@@ -18,4 +18,10 @@
     <string name="green">Green</string>
     <string name="red">Red</string>
     <string name="black">Black</string>
+    <string name="colors">Colors:</string>
+    <string name="white_mana_symbol">White mana symbol</string>
+    <string name="blue_mana_symbol">Blue mana symbol</string>
+    <string name="green_mana_symbol">Green mana symbol</string>
+    <string name="black_mana_symbol">Black mana symbol</string>
+    <string name="red_mana_symbol">Red mana symbol</string>
 </resources>

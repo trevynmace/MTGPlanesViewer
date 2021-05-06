@@ -27,9 +27,9 @@ object NetworkService {
             return@async mService.getCards(pageSize, name, selectedSet, colors).cards
         }
 
-    suspend fun getCardsAsync(pageNumber: Int, pageSize: Int, name: String = ""): Deferred<List<Card>> =
+    suspend fun getCardsAsync(pageNumber: Int, pageSize: Int, name: String, selectedSet: String, colors: List<String>): Deferred<List<Card>> =
             scope.async(Dispatchers.IO) {
-                return@async mService.getCards(pageNumber, pageSize, name).cards
+                return@async mService.getCards(pageNumber, pageSize, name, selectedSet, colors).cards
             }
 
     suspend fun getSetsAsync(): Deferred<List<MTGSet>> =

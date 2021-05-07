@@ -9,9 +9,7 @@ import java.util.*
 
 object NetworkService {
     private val scope = CoroutineScope(Dispatchers.IO)
-
     private const val baseUrl = "https://api.magicthegathering.io/"
-
     private val mService: MTGService
 
     init {

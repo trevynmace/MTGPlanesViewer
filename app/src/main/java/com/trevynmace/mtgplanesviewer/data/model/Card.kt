@@ -1,6 +1,5 @@
 package com.trevynmace.mtgplanesviewer.data.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Card (

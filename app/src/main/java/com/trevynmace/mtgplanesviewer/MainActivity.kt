@@ -218,6 +218,7 @@ class MainActivity : AppCompatActivity() {
             mSelectedSet = mSetSpinner.selectedItem as MTGSet
 
             mSettingsDialog.dismiss()
+            mScrollListener.resetState()
             getCards()
         }
 

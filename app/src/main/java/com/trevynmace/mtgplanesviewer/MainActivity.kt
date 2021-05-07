@@ -1,6 +1,8 @@
 package com.trevynmace.mtgplanesviewer
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -8,7 +10,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -74,6 +75,48 @@ class MainActivity : AppCompatActivity() {
         mSettingsButton.setOnClickListener {
             mSettingsDialog.show()
         }
+    }
+
+    private fun handleInternetPermission(): Boolean {
+        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val networkCapabilities = connectivityManager.activeNetwork
+        if (networkCapabilities == null) {
+            showNoInternetDialog()
+            return false
+        }
+
+        val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities)
+        if (activeNetwork == null) {
+            showNoInternetDialog()
+            return false
+        }
+
+        val hasInternet = when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)     -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else                                                               -> false
+        }
+
+        return if (hasInternet) {
+            true
+        }
+        else {
+            showNoInternetDialog()
+            false
+        }
+    }
+
+    private fun showNoInternetDialog() {
+        AlertDialog.Builder(this)
+                .setTitle("No Internet")
+                .setMessage("This app will have limited functionality without an internet connection.")
+                .setPositiveButton("Okay") { dialogInterface, _ -> dialogInterface.dismiss() }
+                .create()
+                .show()
+
+        toggleProgressBar(false)
     }
 
     override fun onResume() {
@@ -148,42 +191,48 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getSets() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val sets = NetworkService.getSetsAsync().await()
+        if (handleInternetPermission()) {
+            GlobalScope.launch(Dispatchers.Main) {
+                val sets = NetworkService.getSetsAsync().await()
 
-            mSetSpinner = mSettingsLayout.findViewById<Spinner>(R.id.set_spinner)
-            val spinnerList = ArrayList<MTGSet>()
-            spinnerList.add(MTGSet())
-            spinnerList.addAll(sets)
+                mSetSpinner = mSettingsLayout.findViewById<Spinner>(R.id.set_spinner)
+                val spinnerList = ArrayList<MTGSet>()
+                spinnerList.add(MTGSet())
+                spinnerList.addAll(sets)
 
-            ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, spinnerList)
-                    .also { adapter ->
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        mSetSpinner.adapter = adapter
-                    }
+                ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, spinnerList)
+                        .also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            mSetSpinner.adapter = adapter
+                        }
+            }
         }
     }
 
     private fun getCards() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val cards = NetworkService.getCardsAsync(mPageSize, mSearchString, mSelectedSet.code, mSelectedColors).await()
+        if (handleInternetPermission()) {
+            GlobalScope.launch(Dispatchers.Main) {
+                val cards = NetworkService.getCardsAsync(mPageSize, mSearchString, mSelectedSet.code, mSelectedColors).await()
 
-            mRecyclerAdapter.cards = cards.toMutableList()
-            mRecyclerAdapter.notifyDataSetChanged()
+                mRecyclerAdapter.cards = cards.toMutableList()
+                mRecyclerAdapter.notifyDataSetChanged()
 
-            toggleProgressBar(false)
+                toggleProgressBar(false)
+            }
         }
     }
 
     private fun getAndAppendCards(pageNumber: Int) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val cards = NetworkService.getCardsAsync(pageNumber, mPageSize, mSearchString, mSelectedSet.code, mSelectedColors).await()
+        if (handleInternetPermission()) {
+            GlobalScope.launch(Dispatchers.Main) {
+                val cards = NetworkService.getCardsAsync(pageNumber, mPageSize, mSearchString, mSelectedSet.code, mSelectedColors).await()
 
-            val startPosition = mRecyclerAdapter.cards.size
-            mRecyclerAdapter.cards.addAll(cards)
+                val startPosition = mRecyclerAdapter.cards.size
+                mRecyclerAdapter.cards.addAll(cards)
 
-            val totalItemCount = mRecyclerAdapter.cards.size
-            mRecyclerAdapter.notifyItemRangeInserted(startPosition, totalItemCount)
+                val totalItemCount = mRecyclerAdapter.cards.size
+                mRecyclerAdapter.notifyItemRangeInserted(startPosition, totalItemCount)
+            }
         }
     }
 

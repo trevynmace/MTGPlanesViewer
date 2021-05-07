@@ -1,7 +1,7 @@
 # MTGPlanesViewer
 ## A Magic the Gathering app for search and display of cards.<br><br>
 ### **Avaiable on Google Play!** 
-### www.google.com
+### https://play.google.com/store/apps/details?id=com.trevynmace.mtgplanesviewer
 
 <br>
 <br>

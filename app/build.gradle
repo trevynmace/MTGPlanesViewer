@@ -10,7 +10,7 @@ android {
         applicationId "com.trevynmace.mtgplanesviewer"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 17
+        versionCode 18
         versionName "1.0.1"
     }
 

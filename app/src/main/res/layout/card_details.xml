@@ -13,11 +13,12 @@
 
         <ImageButton
             android:id="@+id/back_image_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_margin="8dp"
             android:src="@drawable/ic_close"
             android:tint="@color/white"
-            android:background="@color/black"
+            android:background="@drawable/round_shape"
             android:contentDescription="@string/back_button"/>
 
         <ImageView

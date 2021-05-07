@@ -18,31 +18,36 @@
 
     <LinearLayout
         android:id="@+id/mtg_set_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="12dp"
         android:layout_below="@+id/additional_filtering_text_view">
 
         <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/white"
             android:text="@string/mtg_set"/>
 
         <Spinner
             android:id="@+id/set_spinner"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:layout_width="match_parent"
+            android:padding="8dp"
             android:prompt="@string/choose_a_set"
-            android:pointerIcon="arrow"/>
+            android:background="@drawable/border_box"/>
 
-<!--        <Button-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/clear_set"/>-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clear_set_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/light_blue"
+            android:text="@string/clear_set" />
 
     </LinearLayout>
 

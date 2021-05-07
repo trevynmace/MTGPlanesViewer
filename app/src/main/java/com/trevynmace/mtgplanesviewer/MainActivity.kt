@@ -203,6 +203,12 @@ class MainActivity : AppCompatActivity() {
 
         getSets()
 
+        val clearSetButton = mSettingsLayout.findViewById<Button>(R.id.clear_set_button)
+        clearSetButton.setOnClickListener {
+            mSetSpinner.setSelection(0)
+            mSelectedSet = mSetSpinner.selectedItem as MTGSet
+        }
+
         val whiteCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.white_check_box)
         val blackCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.black_check_box)
         val redCheckBox = mSettingsLayout.findViewById<CheckBox>(R.id.red_check_box)

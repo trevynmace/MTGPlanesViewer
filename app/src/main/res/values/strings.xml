@@ -24,4 +24,5 @@
     <string name="green_mana_symbol">Green mana symbol</string>
     <string name="black_mana_symbol">Black mana symbol</string>
     <string name="red_mana_symbol">Red mana symbol</string>
+    <string name="clear_set">Clear set</string>
 </resources>

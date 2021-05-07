@@ -48,7 +48,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mCardProgressBar = findViewById(R.id.cards_progress_bar)
         mRecyclerView = findViewById(R.id.cards_recycler_view)
+
+        toggleProgressBar(true)
+
         val gridLayout = GridLayoutManager(this, 2)
         mRecyclerView.layoutManager = gridLayout
 
@@ -66,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         mSearchEditText = findViewById(R.id.search_edit_text)
         mSearchEditText.addTextChangedListener(textWatcher)
 
-        mCardProgressBar = findViewById(R.id.cards_progress_bar)
         mSettingsButton = findViewById(R.id.settings_button)
         mSettingsButton.setOnClickListener {
             mSettingsDialog.show()
@@ -218,6 +221,7 @@ class MainActivity : AppCompatActivity() {
             mSelectedSet = mSetSpinner.selectedItem as MTGSet
 
             mSettingsDialog.dismiss()
+            toggleProgressBar(true)
             mScrollListener.resetState()
             getCards()
         }

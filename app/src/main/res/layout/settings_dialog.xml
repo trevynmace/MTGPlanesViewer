@@ -39,6 +39,11 @@
             android:prompt="@string/choose_a_set"
             android:pointerIcon="arrow"/>
 
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/clear_set"/>-->
+
     </LinearLayout>
 
     <TextView

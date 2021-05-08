@@ -32,6 +32,7 @@ object NetworkService {
 
     suspend fun getSetsAsync(): Deferred<List<MTGSet>> =
         scope.async(Dispatchers.IO) {
-            return@async mService.getSets().sets
+            val sets = mService.getSets().sets
+            return@async sets.toMutableList().sortedByDescending { it.releaseDate }
         }
 }

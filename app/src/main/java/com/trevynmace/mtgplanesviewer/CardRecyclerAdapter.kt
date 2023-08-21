@@ -1,7 +1,7 @@
 package com.trevynmace.mtgplanesviewer
 
 import android.content.Intent
-import android.os.Bundle
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +11,12 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.trevynmace.mtgplanesviewer.data.model.Card
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 class CardRecyclerAdapter : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>() {
     var cards: MutableList<Card> = ArrayList()
@@ -52,9 +58,12 @@ class CardRecyclerAdapter : RecyclerView.Adapter<CardRecyclerAdapter.CardHolder>
             }
 
             if (card.imageUrl.isNotEmpty()) {
+                val fixed = card.imageUrl.replaceFirst("http", "https")
                 Picasso.get()
-                        .load(card.imageUrl.replace("http", "https"))
+                        .load(fixed)
+                        .placeholder(R.drawable.card_placeholder)
                         .into(cardImage)
+
             }
             else {
                 cardImage.setImageResource(R.drawable.card_placeholder)

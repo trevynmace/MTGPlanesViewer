@@ -48,8 +48,10 @@ class CardDetailsActivity : AppCompatActivity() {
         mCardDescriptionTextView = findViewById(R.id.card_description_text_view)
 
         if (mCard.imageUrl.isNotEmpty()) {
+            val fixed = mCard.imageUrl.replaceFirst("http", "https")
             Picasso.get()
-                .load(mCard.imageUrl.replace("http", "https"))
+                .load(fixed)
+                .placeholder(R.drawable.card_placeholder)
                 .into(mCardImageView)
         }
         else {

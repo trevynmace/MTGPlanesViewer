@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.trevynmace.mtgplanesviewer"
         minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 25
-        versionName "1.0.2"
+        targetSdkVersion 33
+        versionCode 26
+        versionName "1.1.0"
     }
 
     buildTypes {
